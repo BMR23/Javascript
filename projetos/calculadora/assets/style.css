@@ -1,0 +1,193 @@
+
+html{
+    font-size: 62.5%;
+}
+body{
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #767A99;
+    font-family: 'Times New Roman', Times, serif
+}
+
+    body #corpo{
+        width: 320px;
+        height: 80vh;
+        border: 1px solid #25293f;
+        background-color: #333A58;
+        box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.459);
+    }
+
+        @media(max-width: 410px){
+            #corpo{
+                width: 96vw;
+            }
+        }
+
+#testeCalculadora{
+    width: 100px;
+    height: 100px;
+    background-color: white;
+    margin-right: 20px;
+    color:black;
+}
+
+#tela{
+    display: flex;
+    flex-direction: column;
+    background-color: #333A58;
+    width: 100%;
+    height: 30%;
+    letter-spacing: 2.5px;
+    color: white;
+}
+    #subDisplay{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: flex-end;
+        color: rgb(153, 152, 152);
+        height: 80%;
+        text-align: right;
+        font-size: 1.8rem;
+        overflow-y: hidden;
+    }
+        #subDisplay p {
+            margin: 1px 5px 2px 0;
+        }
+    #display {
+        height: 10%;
+        margin-right: 5px;
+        text-align: right;
+        font-size: 2.5rem;
+        background-color: inherit;
+    }
+
+
+.grid{
+    display: grid;
+    width: 100%;
+    height: 70%;
+    background-color: #1f2335;
+    grid-template-columns: repeat(4, 25%);
+    grid-template-rows: repeat(5, 20%);
+    grid-template-areas: 
+    "operadores operadores operadores operadores"
+    "digitos digitos digitos operadores-2"   
+    "digitos digitos digitos operadores-2"   
+    "digitos digitos digitos finalizar"
+    "digitos digitos digitos finalizar"
+}
+.especial {
+    color: #fa204f;
+    background-color: #50556E;
+    font-family: 'Courier Prime', monospace;
+    font-size: 2.2rem;
+    font-weight: 400;
+    text-shadow: 0.5px 0.5px 0.2px rgba(0, 0, 0, 0.24);
+    letter-spacing: 2px;
+}
+button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    background-color: #333A58;
+    border: 1px solid #282d44;
+    
+}
+
+#finalizar {
+    font-family: 'Courier Prime', monospace;
+    font-size: 2.2rem;
+    font-weight: 400;
+    color: white;
+    background-color: #FF3764;
+}
+
+#teste {
+    grid-area: teste;
+}
+#finalizar {
+    grid-area: finalizar;
+}
+
+#teste button{
+    height: 50%;
+    width: 100%;
+}
+/* #teste button #finalizar{
+    height: 50%;
+} */
+
+#operadores{
+    grid-area: operadores;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#operadores>button {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    /* display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; */
+}
+#operadores .linha {
+    height: 100%;
+    width: 25%;
+}
+#operadores-2 .coluna {
+    height: 100%;
+    width: 100%;
+}
+
+#digitos{
+    grid-area: digitos;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+}
+
+    #digitos .digitoSet {
+        font-size: 1.5rem;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.404);
+    }
+    #digitos .digitoSet.maior {
+        font-size: 2rem;
+    }
+
+/* #clear {
+    grid-area: clear;
+}
+
+#finalizar{
+    grid-area: finalizar;
+    background-color: rgb(164, 211, 211);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+} */
+/* 
+.operadores>div:nth-child(1){
+    grid-area: operador-1;
+}
+.operadores>div:nth-child(2){
+    grid-area: operador-2;
+}
+.operadores>div:nth-child(3){
+    grid-area: operador-3;
+}
+.operadores>div:nth-child(4){
+    grid-area: operador-4;
+} */
+
+.operadores>div{
+    /* padding: 20px; */
+    text-align: center;
+}
