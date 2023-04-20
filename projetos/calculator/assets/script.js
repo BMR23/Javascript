@@ -66,6 +66,8 @@ function inserirOperador(operador){
 
     if (operador == 'finalizar'){
         return
+    }else if(operador.length != 1){
+        return 0
     }
     contagemConclusao = 0
 
@@ -97,10 +99,11 @@ function inserirOperador(operador){
         let lastLetterDisplay = display.textContent.slice(-1)
         let condicao1 = lastLetterDisplay != '+' && lastLetterDisplay != '-'
         let condicao2 = lastLetterDisplay != 'x' && lastLetterDisplay != '/'
+        let condicao3 = lastLetterDisplay != '÷' && lastLetterDisplay != '%'
         
-        if (condicao1 && condicao2){
+        if (condicao1 && condicao2 && condicao3){
             numOperador = 1
-                display.innerHTML += operador
+            display.innerHTML += operador
                 //numOperador++
     
         }
@@ -114,67 +117,58 @@ function separaString(text){
 
     for (t of text){
         text = text.replace('%', '/100');
+        text = text.replace('x', '*')
+        text = text.replace('÷', '/')
     }
     console.log('text depois')
     console.log(text)
 
     while(ind < text.length){
-        switch (text[ind]) {
-            case '+':
-                sub0 = text.substring(0,ind)
-                lista.push(sub0, '+')
-                text = text.substring(ind+1)
-                ind = 0
-                continue
-    
-            case '-':
-                sub0 = text.substring(0,ind)
-                lista.push(sub0, '-')
-                text = text.substring(ind+1)
-                ind = 0           
-                continue
-    
-            case 'x':
-                sub0 = text.substring(0,ind)
-                lista.push(sub0, '*')
-                text = text.substring(ind+1)
-                ind = 0
-                continue
-    
-            case '*':
-                sub0 = text.substring(0,ind)
-                lista.push(sub0, '*')
-                text = text.substring(ind+1)
-                ind = 0
-                continue
-    
-            case '÷':
-                console.log(text[ind])
-                sub0 = text.substring(0,ind)
-                lista.push(sub0, '/')
-                text = text.substring(ind+1)
-                ind = 0
-                continue
-
-            case '/':
-                console.log(text[ind])
-                sub0 = text.substring(0,ind)
-                lista.push(sub0, '/')
-                text = text.substring(ind+1)
-                ind = 0
-                continue
-    
-            default:
-                if (!(isNaN(text))){
-                    if (isNaN(lista[lista. length - 1])){
-                        lista.push(text)
-                    }}
-                ind++
-                continue
+        if (isNaN(text[ind])){
+            sub0 = text.substring(0,ind)
+            op = text[ind]
+            lista.push(sub0, op)
+            text = text.substring(ind+1)
+            ind = 0
+            continue
         }
+        else{
+            if (!(isNaN(text))){
+                // Se o que sobrou do texto for numérico
+                if (isNaN(lista[lista. length - 1])){
+                    // Se o último item da lista não for numérico,
+                    // portanto, operador
+                    lista.push(text)
+                }}
+            ind++
+            continue
+        }
+/*
+case '√':
+if(!(isNaN(ind-1))){
+    lista.push('*')
+}
+let indZ = ind + 1
+for (indZ; indZ < text.length; indZ++){
+    if(!(isNaN(text[indZ])) || indZ == '.'){
+        sub0 += text[indZ]
+        //alert(text[indZ])
     }
-    console.log('lista depois:')
-    console.log(lista)
+    else{ break }
+    }
+sub0 = 
+num = parseFloat(sub0)
+resul = Math.sqrt(num)
+//alert(indZ)
+resul = resul + ''
+lista.push(resul)
+text = text.substring(indZ-1)
+continue
+
+*/
+    }
+    /* alert('lista depois:')
+    alert(lista) */
     return lista
 }
 
@@ -209,8 +203,34 @@ function calcular(){
     let contador = 0
     if (lista.length >= 3 ){
         while(contador === 0) {
-            
-            if (lista.includes('*')){
+
+            if(lista.includes('*') && lista.includes('/')){
+                let indexMult = lista.indexOf('*')
+                let indexDivid = lista.indexOf('/')
+
+                if (indexMult < indexDivid){
+                    x = lista.indexOf('*')
+                    num1 = parseFloat(lista[x-1])
+                    num2 = parseFloat(lista[x+1])
+                    calc = num1 * num2
+                    lista[x] = calc
+                    lista.splice(x-1, 1)
+                    lista.splice(x, 1)
+                    continue
+                }
+                else if (indexMult > indexDivid){
+                    x = lista.indexOf('/')
+                    num1 = parseFloat(lista[x-1])
+                    num2 = parseFloat(lista[x+1])
+                    calc = num1 / num2
+                    lista[x] = calc
+                    lista.splice(x-1, 1)
+                    lista.splice(x, 1)
+                    continue
+                }
+            }
+
+            else if (lista.includes('*')){
                 x = lista.indexOf('*')
                 num1 = parseFloat(lista[x-1])
                 num2 = parseFloat(lista[x+1])
@@ -230,6 +250,33 @@ function calcular(){
                 lista.splice(x, 1)
                 continue
             }
+
+            else if(lista.includes('+') && lista.includes('-')){
+                let indexSoma = lista.indexOf('+')
+                let indexSubt = lista.indexOf('-')
+
+                if (indexSoma < indexSubt){
+                    x = lista.indexOf('+')
+                    num1 = parseFloat(lista[x-1])
+                    num2 = parseFloat(lista[x+1])
+                    calc = num1 + num2
+                    lista[x] = calc
+                    lista.splice(x-1, 1)
+                    lista.splice(x, 1)
+                    continue
+                }
+                else if (indexSoma > indexSubt){
+                    x = lista.indexOf('-')
+                    num1 = parseFloat(lista[x-1])
+                    num2 = parseFloat(lista[x+1])
+                    calc = num1 - num2
+                    lista[x] = calc
+                    lista.splice(x-1, 1)
+                    lista.splice(x, 1)
+                    continue
+                }
+            }
+
             else if (lista.includes('+')){
                 x = lista.indexOf('+')
                 num1 = parseFloat(lista[x-1])
@@ -252,6 +299,8 @@ function calcular(){
             }
             else{
                 contador = 1
+                calc = calc + ''
+                calc = calc.replace('.',',')
                 display.innerHTML = calc //
                 contagemConclusao++ //
             }
