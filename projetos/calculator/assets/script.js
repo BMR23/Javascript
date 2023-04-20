@@ -64,6 +64,9 @@ function inserirOperador(operador){
     var display = document.getElementById('display');
     var subDisplay = document.getElementById('subDisplay');
 
+    if (operador == 'finalizar'){
+        return
+    }
     contagemConclusao = 0
 
     function limpar(){
@@ -97,7 +100,7 @@ function inserirOperador(operador){
         
         if (condicao1 && condicao2){
             numOperador = 1
-                display.innerHTML += `${operador}`
+                display.innerHTML += operador
                 //numOperador++
     
         }
@@ -108,11 +111,11 @@ function separaString(text){
     let lista = []
     let ind = 0
     console.log("Função separaString:")
-    console.log(`text antes do replace: ${text}`)
+
     for (t of text){
-        text.replace(" ", "");
-        text.replace("%", '/100');
+        text = text.replace('%', '/100');
     }
+    console.log('text depois')
     console.log(text)
 
     while(ind < text.length){
@@ -170,6 +173,8 @@ function separaString(text){
                 continue
         }
     }
+    console.log('lista depois:')
+    console.log(lista)
     return lista
 }
 
@@ -186,6 +191,8 @@ function calcular(){
 
 
     text = text.replace(',', '.')
+    console.log('text antes do separaString')
+    console.log(text)
     let lista = separaString(text)
    
     if (lista[0] == ''){
@@ -267,11 +274,11 @@ function seCliclar(){
         inserirDigito(digito.target.id)
     });
     
-    const operadores = document.getElementById('operadores');
+    const operadores = document.getElementById('operadoresL');
     operadores.addEventListener("click", (operador)=>{
         inserirOperador(operador.target.id)
     });
-    const operadores2 = document.getElementById('operadores-2');
+    const operadores2 = document.getElementById('operadoresC');
     operadores2.addEventListener("click", (operador)=>{
         inserirOperador(operador.target.id)
     });
