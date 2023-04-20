@@ -97,12 +97,9 @@ function inserirOperador(operador){
         
         if (condicao1 && condicao2){
             numOperador = 1
-            if (operador == '% '){
-                //display.innerHTML +=   
-            }else{
                 display.innerHTML += `${operador}`
                 //numOperador++
-            }
+    
         }
     }
 } 
@@ -112,7 +109,10 @@ function separaString(text){
     let ind = 0
     console.log("Função separaString:")
     console.log(`text antes do replace: ${text}`)
-    for (t of text){text.replace(" ", "")}
+    for (t of text){
+        text.replace(" ", "");
+        text.replace("%", '/100');
+    }
     console.log(text)
 
     while(ind < text.length){
