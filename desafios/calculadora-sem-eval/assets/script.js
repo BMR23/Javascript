@@ -162,8 +162,6 @@ function separaString(text){
         }
         else{
             if (!(isNaN(text))){
-                alert('o que sobrou do texto');
-                alert(text);
                 // Se o que sobrou do texto for numérico
                 if (isNaN(lista[lista. length - 1])){
                     // Se o último item da lista não for numérico,
