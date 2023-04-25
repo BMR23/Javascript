@@ -18,12 +18,12 @@ body{
 }
 
     #corpo{
-        height: 80%;
-        min-height: 568px;
-        width: 340px;
+        /* min-height: 568px;
+        width: 340px; 
+        min-height: 284px; */
+        height: 500px;
+        width: 300px;
         padding-bottom: 5px;
-/*         border: 1px solid #25293f;
- */
         box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.459);
         padding: 5px 10px 10px 10px;
         border-radius:10px 10px 10% 10% ;
@@ -60,6 +60,7 @@ body{
     background-color: rgb(78, 77, 77);
     border-radius: 10px;
     margin-bottom: 20px;
+    overflow-x: scroll;
 }
     #subDisplay{
         display: flex;
@@ -80,6 +81,7 @@ body{
         margin-right: 5px;
         margin-bottom: 25px;
         text-align: right;
+        padding-left: 6px;
         background-color: inherit;
     }
 
