@@ -60,7 +60,7 @@ body{
     background-color: rgb(78, 77, 77);
     border-radius: 10px;
     margin-bottom: 20px;
-    overflow-x: scroll;
+    /* overflow-x: scroll; */
 }
     #subDisplay{
         display: flex;

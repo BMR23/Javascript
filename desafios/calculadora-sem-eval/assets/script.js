@@ -1,6 +1,7 @@
 // Esboço
 var display = document.getElementById('display');
 var subDisplay = document.getElementById('subDisplay');
+var operadores = ['+', '-', '*', 'x', '/', '÷', '√', '%', '^', '.', ',']
 var contagemConclusao = 0;
 var numOperador = 0;
 var numOperadorEspecial = 0;
@@ -31,7 +32,7 @@ function inserirDigito(digito){
     }
     else if(digito == 'Delete'){
         display.innerHTML = "";
-        subDisplay.innerHTML = "";
+        subDisplay.innerHTML = `<p></p>`;
         return 0 ;
     }
     else if(digito.length != 1){
@@ -62,9 +63,10 @@ function inserirDigito(digito){
 function inserirOperador(operador){
     var display = document.getElementById('display');
     var subDisplay = document.getElementById('subDisplay');
-    let operadores = ['+', '-', '*', 'x', '/', '÷', '√', '%', '^', '.', ',']
+    
     let operadoresNormais = ['+', '-']
-    let lastLetterDisplay = display.textContent.slice(-1)
+    let lastLetterDisplay = display.textContent.slice(-2)
+    lastLetterDisplay = lastLetterDisplay.replace(' ', '')
     
     // Se o operador estiver incluido na lista operadores
     if (operadores.includes(operador)){
@@ -73,19 +75,19 @@ function inserirOperador(operador){
             if ( operadoresNormais.includes(operador) ){
                 contagemConclusao = 0;
                 numOperador = 1;
-                display.innerHTML += operador;
+                display.innerHTML += `${operador}`;
             }
             else{ return;}
         }
         else if (!(operadores.includes(lastLetterDisplay)) && !(lastLetterDisplay == '')){
             contagemConclusao = 0;
             numOperador = 1;
-            display.innerHTML += operador;
+            display.innerHTML += ` ${operador} `;
         }
     }
     else if(operador == 'C'){
+        subDisplay.innerHTML = `<p></p>`;
         display.innerHTML = "";
-        subDisplay.innerHTML = "";
         return 0 ;
     }
     else{ return 0; }
@@ -113,189 +115,125 @@ function inserirOperador(operador){
 
     
 
-function separaString(text){
-    let lista = [];
-    let ind = 0;
-
+function preparaString(text){
     for (t of text){
         text = text.replace('%', '/100');
         text = text.replace('x', '*');
         text = text.replace('÷', '/');
         text = text.replace(',', '.');
     }
-
-    for(ind; ind <= text.length; ind ++){
-        /* if (text[ind] == '√'){
-            if(!(isNaN(ind-1)) && ind != 0){
-                lista.push('*');
-            }
-            let indZ = ind + 1;
-            for (indZ; indZ < text.length; indZ++){
-                if(!(isNaN(text[indZ])) || indZ == '.'){
-                    sub0 += text[indZ];
-                    //alert(text[indZ])
-                }
-                else{ break; }
-            } 
-            num = parseFloat(sub0);
-            resul = Math.sqrt(num);
-            //alert(indZ)
-            resul = resul + ''
-            lista.push(resul);
-            text = text.substring(indZ-1);
-            continue;
-        } */
-        if (isNaN(text[ind])){
-            if (ind == 0){
-                op = text[ind];
-                lista.push('0', op)
-                text = text.substring(ind+1);
-                ind = 0;
-                continue;
-            }
-            sub0 = text.substring(0,ind);
-            op = text[ind];
-            lista.push(sub0, op);
-            text = text.substring(ind+1);
-            ind = 0;
-            continue;
-        }
-        else{
-            if (!(isNaN(text))){
-                // Se o que sobrou do texto for numérico
-                if (isNaN(lista[lista. length - 1])){
-                    // Se o último item da lista não for numérico,
-                    // portanto, operador
-                    lista.push(text);
-                }}
-            continue
-        }
+    let lista = text.split(' ')
+    if (lista[0] == ''){
+        lista.shift()
     }
-    return lista;
+    if(isNaN(lista[lista.length-1]) || lista[lista.length-1] == ' '){
+        lista.pop()
+    }
+    console.log(lista)
+    return lista
 }
 
 function calcular(){
     var display = document.getElementById('display');
     var subDisplay = document.getElementById('subDisplay');
     let text = display.textContent;
-    let lista = separaString(text)
+    let lista = preparaString(text)
     let calc = 0
     let contador = 0
 
-    if (lista[0] == ''){
-        nadaQuePreste = lista.shift()
-    }
-    if(isNaN(lista[lista.length-1]) || lista[lista.length-1] == ' '){
-        lista.pop()
+    const auxCalc = function(lista, operador){
+        x = lista.indexOf(operador)
+        num1 = parseFloat(lista[x-1])
+        num2 = parseFloat(lista[x+1])
+        switch (operador){
+            case '^':
+                calc = num1 ** num2
+                break
+            case '*':
+                calc = num1 * num2
+                break
+            case '/':
+                calc = num1 / num2
+                break
+            case '+':
+                calc = num1 + num2
+                break
+            case '-':
+                calc = num1 - num2
+                break
+        }
+        lista[x] = calc
+        lista.splice(x-1, 1)
+        lista.splice(x, 1)
     }
 
     if (lista.length >= 3 ){
         while(contador === 0) {
 
             if(lista.includes('^')){
-                x = lista.indexOf('^')
-                num1 = parseFloat(lista[x-1])
-                num2 = parseFloat(lista[x+1])
-                calc = num1 ** num2
-                lista[x] = calc
-                lista.splice(x-1, 1)
-                lista.splice(x, 1)
+                auxCalc(lista, '^')
                 continue
             }
-
+            //
             else if(lista.includes('*') && lista.includes('/')){
                 let indexMult = lista.indexOf('*')
                 let indexDivid = lista.indexOf('/')
 
                 if (indexMult < indexDivid){
-                    x = lista.indexOf('*')
-                    num1 = parseFloat(lista[x-1])
-                    num2 = parseFloat(lista[x+1])
-                    calc = num1 * num2
-                    lista[x] = calc
-                    lista.splice(x-1, 1)
-                    lista.splice(x, 1)
+                    auxCalc(lista, '*')
                     continue
                 }
                 else if (indexMult > indexDivid){
-                    x = lista.indexOf('/')
-                    num1 = parseFloat(lista[x-1])
-                    num2 = parseFloat(lista[x+1])
-                    calc = num1 / num2
-                    lista[x] = calc
-                    lista.splice(x-1, 1)
-                    lista.splice(x, 1)
+                    auxCalc(lista, '/')
                     continue
                 }
             }
-
+            //
             else if (lista.includes('*')){
-                x = lista.indexOf('*')
-                num1 = parseFloat(lista[x-1])
-                num2 = parseFloat(lista[x+1])
-                calc = num1 * num2
-                lista[x] = calc
-                lista.splice(x-1, 1)
-                lista.splice(x, 1)
+                auxCalc(lista, '*')
                 continue
             }
+            //
             else if (lista.includes('/')){
-                x = lista.indexOf('/')
-                num1 = parseFloat(lista[x-1])
-                num2 = parseFloat(lista[x+1])
-                calc = num1 / num2
-                lista[x] = calc
-                lista.splice(x-1, 1)
-                lista.splice(x, 1)
+                auxCalc(lista, '/')
                 continue
             }
-
+            //
             else if(lista.includes('+') && lista.includes('-')){
                 let indexSoma = lista.indexOf('+')
                 let indexSubt = lista.indexOf('-')
-
+                
+                if (indexSoma == 0){
+                    lista.shift()
+                    continue
+                }
+                else if(indexSubt == 0){
+                    lista.shift()
+                    num = parseFloat(lista[0])
+                    lista[0] = num * -1
+                    console.log(lista[0])
+                    continue
+                }
                 if (indexSoma < indexSubt){
-                    x = lista.indexOf('+')
-                    num1 = parseFloat(lista[x-1])
-                    num2 = parseFloat(lista[x+1])
-                    calc = num1 + num2
-                    lista[x] = calc
-                    lista.splice(x-1, 1)
-                    lista.splice(x, 1)
+                    auxCalc(lista, '+')
                     continue
                 }
                 else if (indexSoma > indexSubt){
-                    x = lista.indexOf('-')
-                    num1 = parseFloat(lista[x-1])
-                    num2 = parseFloat(lista[x+1])
-                    calc = num1 - num2
-                    lista[x] = calc
-                    lista.splice(x-1, 1)
-                    lista.splice(x, 1)
+                    auxCalc(lista, '-')
                     continue
                 }
             }
-
+            //
             else if (lista.includes('+')){
-                x = lista.indexOf('+')
-                num1 = parseFloat(lista[x-1])
-                num2 = parseFloat(lista[x+1])
-                calc = num1 + num2
-                lista[x] = calc
-                lista.splice(x-1, 1)
-                lista.splice(x, 1)
+                auxCalc(lista, '+')
                 continue
             }
+            //
             else if (lista.includes('-')){
-                x = lista.indexOf('-')
-                num1 = parseFloat(lista[x-1])
-                num2 = parseFloat(lista[x+1])
-                calc = num1 - num2
-                lista[x] = calc
-                lista.splice(x-1, 1)
-                lista.splice(x, 1)
+                auxCalc(lista, '-')
                 continue
             }
+            //
             else{
                 contador = 1
                 calc = calc + ''
@@ -306,14 +244,7 @@ function calcular(){
         }
         subDisplay.innerHTML += `<p> ${text} </p>`
     } 
-    else{
-        console.log('Só apareço com lista pequena (menor que 3)')
-        console.log(lista)
-        //display.innerHTML = text
-    }
-
 }
-
 
 function seCliclar(){
     const digitos = document.getElementById('digitos');
