@@ -1,19 +1,52 @@
-// Esboço
 var display = document.getElementById('display');
 var subDisplay = document.getElementById('subDisplay');
-var operadores = ['+', '-', '*', 'x', '/', '÷', '√', '%', '^', '.', ',']
+var listaOperadores = ['+', '-', '*', 'x', '/', '÷', '√', '%', '^', '.', ',']
 var contagemConclusao = 0;
 var numOperador = 0;
 var numOperadorEspecial = 0;
 
 
+function seCliclar(){
+    const digitos = document.getElementById('digitos');
+    digitos.addEventListener("click", (digito)=>{
+        inserirDigito(digito.target.id)
+    });
+    
+    const operadores = document.getElementById('operadoresL');
+    operadores.addEventListener("click", (operador)=>{
+        inserirOperador(operador.target.id)
+    });
+    const operadores2 = document.getElementById('operadoresC');
+    operadores2.addEventListener("click", (operador)=>{
+        inserirOperador(operador.target.id)
+    });
+
+    const finalizar = document.getElementById('finalizar');
+    finalizar.addEventListener('click', calcular);
+
+    addEventListener('keydown', (event)=>{
+        // verificaTeclado(event.key)
+        tecla = event.key
+        if(tecla.length > 4){
+            inserirDigito(tecla)
+        }
+        else if (!(isNaN(tecla))){
+            inserirDigito(tecla)
+        }
+        else if (isNaN(tecla)){
+            inserirOperador(tecla)
+        }
+    })
+}
+
+
 function inserirDigito(digito){
     console.log(digito);
     var display = document.getElementById('display');
+    var subDisplay = document.getElementById('subDisplay');
     numOperador = 0;
     numOperadorEspecial = 0;
     //preCalculo(numOperador)
-
 
     function remover(){
         let text = display.textContent;
@@ -31,8 +64,8 @@ function inserirDigito(digito){
         return 0;
     }
     else if(digito == 'Delete'){
-        display.innerHTML = "";
         subDisplay.innerHTML = `<p></p>`;
+        display.innerHTML = "";
         return 0 ;
     }
     else if(digito.length != 1){
@@ -59,30 +92,27 @@ function inserirDigito(digito){
 }
 
 
-
 function inserirOperador(operador){
     var display = document.getElementById('display');
     var subDisplay = document.getElementById('subDisplay');
     
-    let operadoresNormais = ['+', '-']
-    let lastLetterDisplay = display.textContent.slice(-2)
+    let listaOperadoresNormais = ['+', '-']
+    let lastLetterDisplay = display.textContent.slice(-1)
     lastLetterDisplay = lastLetterDisplay.replace(' ', '')
     
-    // Se o operador estiver incluido na lista operadores
-    if (operadores.includes(operador)){
-        // Se a ultima letra do display não estiver incluido na lista operadores
-        if (! (operadores.includes(lastLetterDisplay) ) && lastLetterDisplay == ''){
-            if ( operadoresNormais.includes(operador) ){
+    if (listaOperadores.includes(operador)){
+        if (! (listaOperadores.includes(lastLetterDisplay) ) && lastLetterDisplay == ''){
+            if ( listaOperadoresNormais.includes(operador) ){
                 contagemConclusao = 0;
                 numOperador = 1;
                 display.innerHTML += `${operador}`;
             }
             else{ return;}
         }
-        else if (!(operadores.includes(lastLetterDisplay)) && !(lastLetterDisplay == '')){
+        else if (!(listaOperadores.includes(lastLetterDisplay)) && !(lastLetterDisplay == '')){
             contagemConclusao = 0;
             numOperador = 1;
-            display.innerHTML += ` ${operador} `;
+            display.innerHTML += `${operador}`;
         }
     }
     else if(operador == 'C'){
@@ -117,20 +147,30 @@ function inserirOperador(operador){
 
 function preparaString(text){
     for (t of text){
-        text = text.replace('%', '/100');
-        text = text.replace('x', '*');
-        text = text.replace('÷', '/');
+        if (listaOperadores.includes(t)){
+            text = text.replace(t, ` ${t} `)
+        }
+        text = text.replace('%', ' / 100');
+        text = text.replace('x', ' * ');
+        text = text.replace('÷', ' / ');
         text = text.replace(',', '.');
     }
     let lista = text.split(' ')
+
     if (lista[0] == ''){
         lista.shift()
     }
-    if(isNaN(lista[lista.length-1]) || lista[lista.length-1] == ' '){
+    console.log(lista[lista.length-1])
+    /* for( i in lista){
+        if (lista[i] === ' '){
+            lista.splice(i-1)
+        }
+    } */
+    if(isNaN(lista[lista.length-1]) || lista[lista.length-1] == ''){
         lista.pop()
-    }
     console.log(lista)
     return lista
+    }
 }
 
 function calcular(){
@@ -246,45 +286,11 @@ function calcular(){
     } 
 }
 
-function seCliclar(){
-    const digitos = document.getElementById('digitos');
-    digitos.addEventListener("click", (digito)=>{
-        inserirDigito(digito.target.id)
-    });
-    
-    const operadores = document.getElementById('operadoresL');
-    operadores.addEventListener("click", (operador)=>{
-        inserirOperador(operador.target.id)
-    });
-    const operadores2 = document.getElementById('operadoresC');
-    operadores2.addEventListener("click", (operador)=>{
-        inserirOperador(operador.target.id)
-    });
-
-    const finalizar = document.getElementById('finalizar');
-    finalizar.addEventListener('click', calcular);
-
-    addEventListener('keydown', (event)=>{
-        // verificaTeclado(event.key)
-        tecla = event.key
-        if(tecla.length > 4){
-            inserirDigito(tecla)
-        }
-        else if (!(isNaN(tecla))){
-            inserirDigito(tecla)
-        }
-        else if (isNaN(tecla)){
-            inserirOperador(tecla)
-        }
-    })
-
-}
-
-function load(){
+/* function load(){
     seCliclar();
 }
     
-document.addEventListener("DOMContentLoaded", load, false);
+document.addEventListener("DOMContentLoaded", load, false); */
 
 
 
