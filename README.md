@@ -1,9 +1,6 @@
 # JavaScript
 Projects and some of my studies on web development.
 
-### List-names Project 
- 
-<p><a href="https://bmr23.github.io/Javascript/projetos/list-name">Click here</a></p>
 
 ### Calculator Project 
  
