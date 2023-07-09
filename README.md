@@ -3,8 +3,7 @@ Projects and some of my studies on web development.
 
 
 ### Calculator Project 
- 
-<p><a href="https://bmr23.github.io/Javascript/desafios/calculadora-sem-eval">Click here</a></p>
+<p><a href="https://bmr23.github.io/Javascript/projetos/calculadora">Click here</a></p>
 
 
 ## 💾 Clone the repository:

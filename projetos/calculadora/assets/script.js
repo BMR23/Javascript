@@ -90,28 +90,6 @@ function inserirOperador(operador){
     }
     else{ return 0; }
 }
-/* 
-    if (lastLetterDisplay == '%'){
-        if(operador != '%' && operador != '√'){
-            contagemConclusao = 0;
-            numOperador = 1;
-            display.innerHTML += operador;
-        }
-        else{ return; }
-    else if(operador == '%'){
-        if (!(isNaN(lastLetterDisplay))){
-            numOperadorEspecial = 1;
-            display.innerHTML += operador;
-        }
-        else{ return; }
-    }
-    else if(operador != '√'){
-        if (isNaN(lastLetterDisplay)){
-            numOperadorEspecial = 1;
-            display.innerHTML += operador;
-} */
-
-    
 
 function separaString(text){
     let lista = [];
@@ -162,8 +140,6 @@ function separaString(text){
         }
         else{
             if (!(isNaN(text))){
-                alert('o que sobrou do texto');
-                alert(text);
                 // Se o que sobrou do texto for numérico
                 if (isNaN(lista[lista. length - 1])){
                     // Se o último item da lista não for numérico,
